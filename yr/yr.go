@@ -5,7 +5,9 @@ import (
 	"fmt"
 )
 
-func FileCelsiusToFahrenheit(cel String) (String) {
-	fahr := strconv.ParseFloat(cel, 64)
-	return  fmt.Springf("%.1f", fahr")
+func FileCelsiusToFahrenheit(cel string) (string) {
+	fahr, _ := strconv.ParseFloat(cel, 64)
+	
+	fahrString := fmt.Sprintf("%.1f", fahr)
+	return fahrString
 }

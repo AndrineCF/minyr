@@ -36,7 +36,7 @@ func main() {
 			// Check if the fil is empty
 			if len(scannerConvFile.Text()) == 0 {
 				for scannerCel.Scan() {
-					fmt.Println(yr.FileCelsiusToFhrenheit("10"))
+					fmt.Println(yr.FileCelsiusToFahrenheit("10"))
 				}
 			} else {
 				fmt.Println("Filen finnes allerede. Vil du generere fil paa nytt?")
