@@ -5,7 +5,8 @@ import (
 	"bufio"
 	"os"
 	"log"
-	"github.com/andrineCF/minyr/yr"
+	"strings"
+	//"github.com/AndrineCF/minyr/yr"
 )
 
 func main() {
@@ -35,9 +36,31 @@ func main() {
 			
 			// Check if the fil is empty
 			if len(scannerConvFile.Text()) == 0 {
+				
+				var readLines []string
+
+				//keep track of the position when reading the file
+				pos := 0
+
+				//read throught the celsius file
 				for scannerCel.Scan() {
-					fmt.Println(yr.FileCelsiusToFahrenheit("10"))
+					lines := strings.Split(scannerCel.Text(), ";")
+					
+					//check if at the  start or the end of file
+					if pos != 0 && lines[3] != "" {
+						// add convert function
+					} else if lines[3] == "" {
+						lines[0] = "Data er basert på gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby"
+					}
+					line := strings.Join(lines, ";")
+					
+					readLines = append(readLines, line)
+					
+					//add to pos keep the track of which line is at
+					pos++
 				}
+
+				fmt.Println(readLines)
 			} else {
 				fmt.Println("Filen finnes allerede. Vil du generere fil paa nytt?")
 				scannerConv := bufio.NewScanner(os.Stdin)
