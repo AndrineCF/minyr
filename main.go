@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// Open the main fil
-	filCel, err = os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+	filCel, err =  os.Open("kjevik-temp-celsius-20220318-20230318.csv")
 	scannerCel := bufio.NewScanner(filCel)
 	
 	//reading input from user
