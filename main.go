@@ -9,9 +9,12 @@ import (
 
 func main() {
 	// Open the main fil
-	filCel, err =  os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+	filCel, err :=  os.Open("kjevik-temp-celsius-20220318-20230318.csv")
 	scannerCel := bufio.NewScanner(filCel)
-	
+
+	// closing the fil
+	defer filCel.Close()
+
 	//reading input from user
 	var input string
 	scannerInput := bufio.NewScanner(os.Stdin)
@@ -53,9 +56,13 @@ func main() {
 			}
 
 			//Closed the file
-			fileConv.Closed()
+			fileConv.Close()
 		} else {
 			fmt.Println("Ikke gylding alternativ, venligst prove igjen")
 		}
+	}
+
+	if err == nil {
+		log.Fatal(err)
 	}
 }
