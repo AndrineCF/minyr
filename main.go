@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"os"
 	"log"
+	"github.com/andrineCF/minyr/yr"
 )
 
 func main() {
@@ -34,9 +35,10 @@ func main() {
 			
 			// Check if the fil is empty
 			if len(scannerConvFile.Text()) == 0 {
-				for scannerCel.Scan() {
-					fmt.Println(scannerCel.Text())
-				}
+				yr.
+				//for scannerCel.Scan() {
+				//	fmt.Println(scannerCel.Text())
+				//}
 			} else {
 				fmt.Println("Filen finnes allerede. Vil du generere fil paa nytt?")
 				scannerConv := bufio.NewScanner(os.Stdin)
