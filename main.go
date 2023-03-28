@@ -33,6 +33,13 @@ func writeToFile(file *os.File, data []string) {
 	writer.Flush()
 }
 
+func options() {
+	fmt.Println("Det er 3 alternativ aa velge mellom:")
+	fmt.Println("convert (lager en fil som koncert celsius til fahrenheit)")
+	fmt.Println("average (tar gjennomsnitt temperaturen i celsius og fahrenheit")
+	fmt.Println("q/exit (avslutter programmet)")
+}
+
 func convertCelsiusFileToFahrenheit(text string) (string) { 
 	lines := strings.Split(text, ";")
 	
@@ -63,6 +70,8 @@ func main() {
 	//variable
 	var readLines []string
 
+	options()
+	
 	// loop to the user quit the program
 	for scannerInput.Scan() {
 		input = scannerInput.Text()
@@ -88,16 +97,17 @@ func main() {
 				}
 			} else {
 								
-        			scannerInputC := bufio.NewScanner(os.Stdin)
+        			scannerInput := bufio.NewScanner(os.Stdin)
 				fmt.Println("Filen finnes allerede. Vil du generere fil paa nytt?")
-				for scannerInputC.Scan() {
-					if scannerInputC.Text() == "j"|| scannerInputC.Text() == "ja"  {
+				for scannerInput.Scan() {
+					fmt.Println(scannerInput.Text())
+					if scannerInput.Text() == "j"|| scannerInput.Text() == "ja"  {
 						for scannerCel.Scan() {
 							fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())
 							readLines = append(readLines, fixLine)
 						}
 						break
-					} else if scannerInputC.Text() == "n" || scannerInputC.Text() == "nei" {
+					} else if scannerInput.Text() == "n" || scannerInput.Text() == "nei" {
 						break
 					} else {
 						fmt.Println("Ikke gyldig valg, prov paa nytt")
@@ -116,6 +126,8 @@ func main() {
 		} else {
 			fmt.Println("Ikke gylding alternativ, venligst prove igjen")
 		}
+
+		options()
 	}
 
 	if err == nil {
