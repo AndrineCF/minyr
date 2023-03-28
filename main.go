@@ -6,8 +6,47 @@ import (
 	"os"
 	"log"
 	"strings"
-	//"github.com/AndrineCF/minyr/yr"
+	"github.com/AndrineCF/minyr/yr"
 )
+
+func getFileSize(file *os.File) (int64) {
+	fileInfo, err := file.Stat()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	return fileInfo.Size()
+}
+
+func writeToFile(file *os.File, data []string) {
+	writer := bufio.NewWriter(file)
+	
+	for _, line := range(data) {
+		_, err := writer.WriteString(line + "\n")
+	
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	writer.Flush()
+}
+
+func convertCelsiusFileToFahrenheit(text string) (string) { 
+	lines := strings.Split(text, ";")
+	
+	// last line will have empty string[] since ;;;
+	if lines[3] == "" {
+		lines[0] = "Data er basert p   gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby"
+	} else if lines[1] != "Stasjon" {
+		lines[3] = yr.FileCelsiusToFahrenheit(lines[3])
+	}
+
+	line := strings.Join(lines, ";")
+
+	return line
+}
 
 func main() {
 	// Open the main fil
@@ -21,6 +60,9 @@ func main() {
 	var input string
 	scannerInput := bufio.NewScanner(os.Stdin)
 
+	//variable
+	var readLines []string
+
 	// loop to the user quit the program
 	for scannerInput.Scan() {
 		input = scannerInput.Text()
@@ -31,49 +73,39 @@ func main() {
 		} else if input == "convert" || input == "konvert" {
 			fmt.Println("Konverterer all maalingene gitt i grader Celsius til grader Fahrenheit")
 			// trying opening fil
-			fileConv, errConv := os.OpenFile("kjevik-temp-celsius-20220318-20230318.csv", os.O_RDWR|os.O_CREATE, 0755)
-			scannerConvFile := bufio.NewScanner(fileConv)
+			fileConv, errConv := os.OpenFile("kjevik-temp-fahr-20220318-20230318.csv", os.O_RDWR|os.O_CREATE, 0755)
 			
 			// Check if the fil is empty
-			if len(scannerConvFile.Text()) == 0 {
+			if getFileSize(fileConv) == 0 {
 				
-				var readLines []string
-
-				//keep track of the position when reading the file
-				pos := 0
 
 				//read throught the celsius file
 				for scannerCel.Scan() {
-					lines := strings.Split(scannerCel.Text(), ";")
+										
+					fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())					
+					readLines = append(readLines, fixLine)
 					
-					//check if at the  start or the end of file
-					if pos != 0 && lines[3] != "" {
-						// add convert function
-					} else if lines[3] == "" {
-						lines[0] = "Data er basert på gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby"
-					}
-					line := strings.Join(lines, ";")
-					
-					readLines = append(readLines, line)
-					
-					//add to pos keep the track of which line is at
-					pos++
 				}
-
-				fmt.Println(readLines)
 			} else {
+								
+        			scannerInputC := bufio.NewScanner(os.Stdin)
 				fmt.Println("Filen finnes allerede. Vil du generere fil paa nytt?")
-				scannerConv := bufio.NewScanner(os.Stdin)
-				
-				for scannerConv.Scan() {
-					if scannerConv.Text() == "j"|| scannerConv.Text() == "ja"  {
-						fmt.Println("La oss skrive over den filen!")
-					} else if scannerConv.Text() == "n" || scannerConv.Text() == "nei" {
+				for scannerInputC.Scan() {
+					if scannerInputC.Text() == "j"|| scannerInputC.Text() == "ja"  {
+						for scannerCel.Scan() {
+							fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())
+							readLines = append(readLines, fixLine)
+						}
 						break
-					}
+					} else if scannerInputC.Text() == "n" || scannerInputC.Text() == "nei" {
+						break
+					} else {
+						fmt.Println("Ikke gyldig valg, prov paa nytt")
 				}
 			}
-			
+			writeToFile(fileConv, readLines)
+			readLines = nil
+			}
 			//check if there errors
 			if errConv != nil {
 				log.Fatal(errConv)
