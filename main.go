@@ -60,15 +60,15 @@ func main() {
 	filCel, err :=  os.Open("kjevik-temp-celsius-20220318-20230318.csv")
 	scannerCel := bufio.NewScanner(filCel)
 
+	// trying opening fil
+	fileConv, errConv := os.OpenFile("kjevik-temp-fahr-20220318-20230318.csv", os.O_RDWR|os.O_CREATE, 0755)
+
 	// closing the fil
 	defer filCel.Close()
 
 	//reading input from user
 	var input string
 	scannerInput := bufio.NewScanner(os.Stdin)
-
-	//variable
-	var readLines []string
 
 	options()
 	
@@ -81,9 +81,9 @@ func main() {
 			os.Exit(0)
 		} else if input == "convert" || input == "konvert" {
 			fmt.Println("Konverterer all maalingene gitt i grader Celsius til grader Fahrenheit")
-			// trying opening fil
-			fileConv, errConv := os.OpenFile("kjevik-temp-fahr-20220318-20230318.csv", os.O_RDWR|os.O_CREATE, 0755)
 			
+			//variable
+			var readLines []string
 			// Check if the fil is empty
 			if getFileSize(fileConv) == 0 {
 				
@@ -93,7 +93,6 @@ func main() {
 										
 					fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())					
 					readLines = append(readLines, fixLine)
-					
 				}
 			} else {
 								
@@ -111,16 +110,19 @@ func main() {
 						break
 					} else {
 						fmt.Println("Ikke gyldig valg, prov paa nytt")
+					}
 				}
 			}
+			fmt.Println("test")
+			fmt.Println(readLines)
 			writeToFile(fileConv, readLines)
-			readLines = nil
-			}
+
 			//check if there errors
 			if errConv != nil {
 				log.Fatal(errConv)
 			}
 
+			readLines = nil
 			//Closed the file
 			fileConv.Close()
 		} else {
