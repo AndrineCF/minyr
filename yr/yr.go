@@ -4,6 +4,8 @@ import (
 	"strconv"
 	"fmt"
 	"log"
+	"os"
+	"bufio"
 	"github.com/AndrineCF/funtemps/conv"
 )
 
@@ -20,4 +22,25 @@ func FileCelsiusToFahrenheit(cel string) (string) {
 	//convert back to string
 	fahrString := fmt.Sprintf("%.1f", conv.CelsiusToFahrenheit(fahr))
 	return fahrString
+}
+
+func countLines(fileNavn string) (int) {
+        // open choosen the 
+	file, err :=  os.Open("../" + fileNavn)
+        
+        //check for errors
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//closing file when finished
+	defer file.Close()
+
+	counter := 0
+	scannerFile := bufio.NewScanner(file)
+	for scannerFile.Scan() {
+		counter++
+	}
+
+	return counter
 }
