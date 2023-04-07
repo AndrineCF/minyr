@@ -13,8 +13,8 @@ func TestCountLines(t *testing.T) {
 	}
 
 	tests :=[]test{
-		{input:"./kjevik-temp-celsius-20220318-20230318.csv", want:16756},
-		{input:"./kjevik-temp-fahr-20220318-20230318.csv", want:16756},
+		{input:"../kjevik-temp-celsius-20220318-20230318.csv", want:16756},
+		{input:"../kjevik-temp-fahr-20220318-20230318.csv", want:16756},
 	}
 
 
