@@ -41,7 +41,7 @@ func TestConvertCelsiusToFahrenheit(t *testing.T) {
 		want:"Data er basert p   gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby;;;"},
 	}
 
-	for _, tc :range tests {
+	for _, tc := range tests {
 		got :=ConvertCelsiusToFahrenheit(tc.input)
 		if !reflect.DeepEqual(tc.want, got) {
                         t.Errorf("expected: %v, got: %v", tc.want, got)
