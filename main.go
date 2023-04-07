@@ -41,21 +41,6 @@ func options() {
 	fmt.Println("q/exit (avslutter programmet)")
 }
 
-func convertCelsiusFileToFahrenheit(text string) (string) { 
-	lines := strings.Split(text, ";")
-	
-	// last line will have empty string[] since ;;;
-	if lines[3] == "" {
-		lines[0] = "Data er basert p   gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby"
-	} else if lines[1] != "Stasjon" {
-		lines[3] = yr.FileCelsiusToFahrenheit(lines[3])
-	}
-
-	line := strings.Join(lines, ";")
-
-	return line
-}
-
 func main() {
 	// Open the main fil
 	filCel, err :=  os.Open("kjevik-temp-celsius-20220318-20230318.csv")
@@ -93,7 +78,7 @@ func main() {
 				//read throught the celsius file
 				for scannerCel.Scan() {
 										
-					fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())					
+					fixLine := yr.ConvertCelsiusToFahrenheit(scannerCel.Text())					
 					readLines = append(readLines, fixLine)
 				}
 			} else {
@@ -104,7 +89,7 @@ func main() {
 					fmt.Println(scannerInput.Text())
 					if scannerInput.Text() == "j"|| scannerInput.Text() == "ja"  {
 						for scannerCel.Scan() {
-							fixLine := convertCelsiusFileToFahrenheit(scannerCel.Text())
+							fixLine := yr.ConvertCelsiusToFahrenheit(scannerCel.Text())
 							readLines = append(readLines, fixLine)
 						}
 						break

@@ -6,11 +6,12 @@ import (
 	"log"
 	"os"
 	"bufio"
+	"strings"
 	"github.com/AndrineCF/funtemps/conv"
 )
 
 //The function convert celsius to fahrenheit by usnig funtemps
-func FileCelsiusToFahrenheit(cel string) (string) {
+func CelsiusToFahrenheit(cel string) (string) {
 	//split the string
 	fahr, err := strconv.ParseFloat(cel, 64)
 
@@ -22,6 +23,22 @@ func FileCelsiusToFahrenheit(cel string) (string) {
 	//convert back to string
 	fahrString := fmt.Sprintf("%.1f", conv.CelsiusToFahrenheit(fahr))
 	return fahrString
+}
+
+//The function convert a string to fahrenheit 
+func ConvertCelsiusToFahrenheit(text string) (string) { 
+	lines := strings.Split(text, ";")
+	
+	// last line will have empty string[] since ;;;
+	if lines[3] == "" {
+		lines[0] = "Data er basert p   gyldig data (per 18.03.2023) (CC BY 4.0) fra Meteorologisk institutt (MET);endringen er gjort av Andrine Celine Flatby"
+	} else if lines[1] != "Stasjon" {
+		lines[3] = CelsiusToFahrenheit(lines[3])
+	}
+
+	line := strings.Join(lines, ";")
+
+	return line
 }
 
 //Count lines in a file
