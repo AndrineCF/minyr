@@ -73,7 +73,7 @@ func main() {
 
 	options()
 	
-	fmt.Println(yr.countLines("kjevik-temp-celsius-20220318-20230318.csv"))
+	fmt.Println(yr.CountLines("kjevik-temp-celsius-20220318-20230318.csv"))
 	// loop to the user quit the program
 	for scannerInput.Scan() {
 		input = scannerInput.Text()

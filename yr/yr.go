@@ -24,9 +24,10 @@ func FileCelsiusToFahrenheit(cel string) (string) {
 	return fahrString
 }
 
-func countLines(fileNavn string) (int) {
+//Count lines in a file
+func CountLines(fileNavn string) (int) {
         // open choosen the 
-	file, err :=  os.Open("../" + fileNavn)
+	file, err :=  os.Open(fileNavn)
         
         //check for errors
 	if err != nil {
