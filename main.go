@@ -112,8 +112,8 @@ func main() {
 			for scannerInput.Scan() {
 				
 				if scannerInput.Text() == "c" || scannerInput.Text() == "f" {
-					average := fmt.Sprintf("%.2f", yr.Average(scannerInput.Text()))
-					fmt.Println("Gjennomsnitt verdien i Celsius er ", average)
+					average := fmt.Sprintf("%.2f", yr.Average(scannerInput.Text(), "kjevik-temp-celsius-20220318-20230318.csv"))
+					fmt.Println("Gjennomsnitt verdien er ", average)
 					break
 				} else {
 					fmt.Println("Ikke gyldig valg, prove paa nytt")
