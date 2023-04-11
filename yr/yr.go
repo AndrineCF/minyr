@@ -65,7 +65,7 @@ func CountLines(fileNavn string) (int) {
 
 func Average(tempType string) (float64){
 	//Open file that is constant
-	file, err := os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+	file, err := os.Open("../kjevik-temp-celsius-20220318-20230318.csv")
 
 	//check for errors
 	if err != nil {
