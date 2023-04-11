@@ -3,6 +3,7 @@ package yr
 import (
 	"testing"
 	"reflect"
+	"math"
 )
 
 //Hente fra tidligere oppgave
@@ -69,14 +70,15 @@ func TestConvertCelsiusToFahrenheit(t *testing.T) {
         }
 }
 
-func TestAverage(t *testing.T {
+
+func TestAverage(t *testing.T) {
 	type test struct {
 		input string
 		want float64
 	}
 
 	tests :=[]test {
-		{input:"../kjevik-temp-celsius-20220318-20230318.csv", want:8.56},
+		{input:"c", want:8.56},
 	}
 
 	for _, tc := range tests {
