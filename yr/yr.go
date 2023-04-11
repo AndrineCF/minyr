@@ -63,7 +63,7 @@ func CountLines(fileNavn string) (int) {
 	return counter
 }
 
-func Average(tempType string) {
+func Average(tempType string) (float64){
 	//Open file that is constant
 	file, err := os.Open("kjevik-temp-celsius-20220318-20230318.csv")
 
@@ -84,10 +84,10 @@ func Average(tempType string) {
 
 	//goes through
 	for scanner.Scan() {
-		lines := strings.Spilt(scanner.Text(), ";")
+		lines := strings.Split(scanner.Text(), ";")
 
 		//check if it is first or the last line
-		if (lines == "Lufttemperatur" || lines [3] == "") {
+		if (lines[3] == "Lufttemperatur" || lines [3] == "") {
 			continue
 		}
 		
@@ -105,6 +105,5 @@ func Average(tempType string) {
 		counter++
 		total += num
 	}
-                    	         average := fmt.Sprintf("%.2f", (nummers/counter))
-                              
+	return (total/counter)
 }

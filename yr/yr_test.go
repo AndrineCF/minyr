@@ -5,6 +5,26 @@ import (
 	"reflect"
 )
 
+//Hente fra tidligere oppgave
+func withinTolerance(a, b, error float64) bool {
+	// Først sjekk om tallene er nøyaktig like
+	if a == b {
+		return true
+	}
+
+	difference := math.Abs(a - b)
+
+	// Siden vi skal dele med b, må vi sjekke om den er 0
+	// Hvis b er 0, returner avgjørelsen om d er mindre enn feilmarginen
+	// som vi aksepterer
+	if b == 0 {
+		return difference < error
+	}
+
+	// Tilslutt sjekk den relative differanse mot feilmargin
+	return (difference / math.Abs(b)) < error
+}
+
 // Testing count lines by provide information from task
 func TestCountLines(t *testing.T) {
 	type test struct {
@@ -47,4 +67,22 @@ func TestConvertCelsiusToFahrenheit(t *testing.T) {
                         t.Errorf("expected: %v, got: %v", tc.want, got)
                 }
         }
+}
+
+func TestAverage(t *testing.T {
+	type test struct {
+		input string
+		want float64
+	}
+
+	tests :=[]test {
+		{input:"../kjevik-temp-celsius-20220318-20230318.csv", want:8.56},
+	}
+
+	for _, tc := range tests {
+		got := Average(tc.input)
+		if !withinTolerance(tc.want, got, 1e-2) {
+			t.Errorf("expected: %v, got: %v", tc.want, got)
+		}
+	}
 }
