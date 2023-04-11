@@ -62,3 +62,49 @@ func CountLines(fileNavn string) (int) {
 
 	return counter
 }
+
+func Average(tempType string) {
+	//Open file that is constant
+	file, err := os.Open("kjevik-temp-celsius-20220318-20230318.csv")
+
+	//check for errors
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//closing the file when finished
+	defer file.Close()
+
+	// variable to calcuted the data
+	var counter float64
+	var total float64
+
+	//setup the scanner
+	scanner := bufio.NewScanner(file)
+
+	//goes through
+	for scanner.Scan() {
+		lines := strings.Spilt(scanner.Text(), ";")
+
+		//check if it is first or the last line
+		if (lines == "Lufttemperatur" || lines [3] == "") {
+			continue
+		}
+		
+		num, err := strconv.ParseFloat(lines[3], 64)
+		
+		if err != nil {
+			log.Fatal(err)
+		}
+		
+		//check if needs to be convert to fahrenheit
+		if tempType == "f" {
+			num = conv.CelsiusToFahrenheit(num)
+		}
+
+		counter++
+		total += num
+	}
+                    	         average := fmt.Sprintf("%.2f", (nummers/counter))
+                              
+}
