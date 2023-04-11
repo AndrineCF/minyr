@@ -73,16 +73,16 @@ func TestConvertCelsiusToFahrenheit(t *testing.T) {
 
 func TestAverage(t *testing.T) {
 	type test struct {
-		input string
+		input []string
 		want float64
 	}
 
 	tests :=[]test {
-		{input:"c", want:8.56},
+		{input:[]string{"c", "../kjevik-temp-celsius-20220318-20230318.csv"}, want:8.56},
 	}
 
 	for _, tc := range tests {
-		got := Average(tc.input)
+		got := Average(tc.input[0], tc.input[1])
 		if !withinTolerance(tc.want, got, 1e-2) {
 			t.Errorf("expected: %v, got: %v", tc.want, got)
 		}

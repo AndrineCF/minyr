@@ -42,9 +42,9 @@ func ConvertCelsiusToFahrenheit(text string) (string) {
 }
 
 //Count lines in a file
-func CountLines(fileNavn string) (int) {
+func CountLines(fileName string) (int) {
         // open choosen the 
-	file, err :=  os.Open(fileNavn)
+	file, err :=  os.Open(fileName)
         
         //check for errors
 	if err != nil {
@@ -63,9 +63,9 @@ func CountLines(fileNavn string) (int) {
 	return counter
 }
 
-func Average(tempType string) (float64){
+func Average(tempType string, fileName string) (float64){
 	//Open file that is constant
-	file, err := os.Open("../kjevik-temp-celsius-20220318-20230318.csv")
+	file, err := os.Open(fileName)
 
 	//check for errors
 	if err != nil {

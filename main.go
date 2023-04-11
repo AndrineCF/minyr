@@ -5,20 +5,8 @@ import (
 	"bufio"
 	"os"
 	"log"
-	"strings"
-	"strconv"
 	"github.com/AndrineCF/minyr/yr"
 )
-
-func getFileSize(file *os.File) (int64) {
-	fileInfo, err := file.Stat()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	
-	return fileInfo.Size()
-}
 
 func writeToFile(file *os.File, data []string) {
 	writer := bufio.NewWriter(file)
@@ -49,16 +37,26 @@ func main() {
 	// trying opening fil
 	fileConv, errConv := os.OpenFile("kjevik-temp-fahr-20220318-20230318.csv", os.O_RDWR|os.O_CREATE, 0755)
 
+	//check for errors
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if errConv != nil {
+		log.Fatal(errConv)
+	}
+
 	// closing the fil
 	defer filCel.Close()
+	defer fileConv.Close()
+
 
 	//reading input from user
 	var input string
 	scannerInput := bufio.NewScanner(os.Stdin)
 
 	options()
-	
-	fmt.Println(yr.CountLines("kjevik-temp-celsius-20220318-20230318.csv"))
+
 	// loop to the user quit the program
 	for scannerInput.Scan() {
 		input = scannerInput.Text()
@@ -69,12 +67,11 @@ func main() {
 		} else if input == "convert" || input == "konvert" {
 			fmt.Println("Konverterer all maalingene gitt i grader Celsius til grader Fahrenheit")
 			
-			//variable
 			var readLines []string
-			// Check if the fil is empty
-			if getFileSize(fileConv) == 0 {
-				
 
+			// Check if the fil is empty
+			if yr.CountLines("kjevik-temp-fahr-20220318-20230318.csv") == 0 {
+				
 				//read throught the celsius file
 				for scannerCel.Scan() {
 										
@@ -100,67 +97,23 @@ func main() {
 					}
 				}
 			}
-			fmt.Println("test")
-			fmt.Println(readLines)
+			
 			writeToFile(fileConv, readLines)
 
-			//check if there errors
-			if errConv != nil {
-				log.Fatal(errConv)
-			}
-
+			// reset the variable
 			readLines = nil
-			//Closed the file
-			fileConv.Close()
-
-		//choose the aaverage options
+			
+		//chose the aaverage options
 		} else if  input == "average" {
-			scannerInput := bufio.NewScanner(os.Stdin)
 			fmt.Println("Hva vil du ha gjennomsnit skrive ut som? c for Celsius eller f for Fahrenheit")
-			var counter float64
-			var nummers float64
+			scannerInput := bufio.NewScanner(os.Stdin)
 
 			//goes through scanner
 			for scannerInput.Scan() {
-				if scannerInput.Text() == "c" {
-					for scannerCel.Scan() {
-						lines := strings.Split(scannerCel.Text(), ";")
-						if lines[3] != "Lufttemperatur" {
-							if lines[3] != ""{
-								convNum, err := strconv.ParseFloat(lines[3], 64)
-								//check for errors
-       								if err != nil {
-               								log.Fatal(err)
-        							}
-								counter += 1
-								nummers += convNum
-								fmt.Println(nummers)
-							}
-						}
-					}
-					average := fmt.Sprintf("%.2f", (nummers/counter))
-					fmt.Println("Gjennomsnitt verdien i Celsius er ", average) 
-					break
-				} else if scannerInput.Text() == "f" {
-					scannerConv := bufio.NewScanner(fileConv)
-					for scannerConv.Scan() {
-                                                lines := strings.Split(scannerConv.Text(), ";")
-                                                if lines[3] != "Lufttemperatur" {
-                                                        if lines[3] != ""{
-                                                                convNum, err := strconv.ParseFloat(lines[3], 64)
-                                                                //check for errors
-                                                                if err != nil {
-                                                                        log.Fatal(err)
-                                                                }
-                                                                counter += 1
-                                                                nummers += convNum
-                                                                fmt.Println(nummers)
-                                                        }
-                                                }
-                                        }
-                                        average := fmt.Sprintf("%.2f", (nummers/counter))
-                                        fmt.Println("Gjennomsnitt verdien i Celsius er ", average)
-                                        break
+				
+				if scannerInput.Text() == "c" || scannerInput.Text() == "f" {
+					average := fmt.Sprintf("%.2f", yr.Average(scannerInput.Text()))
+					fmt.Println("Gjennomsnitt verdien i Celsius er ", average)
 					break
 				} else {
 					fmt.Println("Ikke gyldig valg, prove paa nytt")
@@ -173,7 +126,4 @@ func main() {
 		options()
 	}
 
-	if err == nil {
-		log.Fatal(err)
-	}
 }
